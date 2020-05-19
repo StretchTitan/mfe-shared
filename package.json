@@ -3,11 +3,16 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "live-server dist/components --port=4203 --cors",
+    "build": "node build-comps",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "postinstall:bak": "",
+    "postinstall": "ngcc"
+  },
+  "bin": {
+    "run-mfe": "./build-comps.js"
   },
   "private": true,
   "dependencies": {
@@ -15,10 +20,14 @@
     "@angular/common": "~9.1.7",
     "@angular/compiler": "~9.1.7",
     "@angular/core": "~9.1.7",
+    "@angular/elements": "^9.1.7",
     "@angular/forms": "~9.1.7",
     "@angular/platform-browser": "~9.1.7",
     "@angular/platform-browser-dynamic": "~9.1.7",
     "@angular/router": "~9.1.7",
+    "@webcomponents/webcomponentsjs": "^2.4.3",
+    "live-server": "^1.2.1",
+    "ngx-build-plus": "^9.0.6",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
