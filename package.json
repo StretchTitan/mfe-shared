@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "live-server dist/components --port=4203 --cors",
     "build": "node build-comps",
+    "build:prod": "node build-comps prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
