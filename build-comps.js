@@ -14,10 +14,12 @@ var outputHandler = (error, stdout, stderr) => {
 };
 
 var componentIncrement = 0;
+var env = process.argv[2];
+var prodExt = env === "prod" ? " --prod" : "";
 
 var compileComponent = (components) => {
-  const buildJsFiles = `ng build --extra-webpack-config webpack.externals.js --single-bundle --prod --main='src/components/${components[componentIncrement]}/compile.ts'`;
-  const copyBundledComponent = `cp dist/tmp/main-es2015.js dist/components/shared-${components[componentIncrement]}.js`;
+  var buildJsFiles = `ng build --extra-webpack-config webpack.externals.js --single-bundle${prodExt} --main='src/components/${components[componentIncrement]}/compile.ts'`;
+  var copyBundledComponent = `cp ${__dirname}/dist/tmp/main-es2015.js ${__dirname}/dist/components/shared-${components[componentIncrement]}.js`;
 
   var child = cp.exec(`${buildJsFiles} && ${copyBundledComponent}`, outputHandler);
 
@@ -27,23 +29,23 @@ var compileComponent = (components) => {
     if (components.length !== componentIncrement) {
       compileComponent(components);
     } else {
+      console.log('built all components')
       process.exit();
     }
   })
 };
 
-const getDirectories = () => {
+var getDirectories = () => {
   return readdirSync(`${__dirname}/src/components/`, { withFileTypes: true })
     .filter((dirent) => dirent.isDirectory())
     .map((dirent) => dirent.name);
 };
 
-if (!existsSync('dist')) {
-  cp.exec("mkdir dist");
-
-  if (!existsSync('dist/components')) {
-    cp.exec("mkdir dist/components");
-  }
+if (!existsSync(`${__dirname}/dist`)) {
+  cp.exec(`mkdir ${__dirname}/dist`);
+}
+if (!existsSync(`${__dirname}/dist/components`)) {
+  cp.exec(`mkdir ${__dirname}/dist/components`);
 }
 
 var components = getDirectories();
